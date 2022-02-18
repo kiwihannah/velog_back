@@ -70,4 +70,21 @@ router.patch("/:postId", async (req, res) => {
   };
 });
 
+// 게시글 삭제 DELETE /api/post/3
+router.delete("/:postId", async (req, res) => {
+  try {
+    const { postId } = req.params;
+
+    const isDeleted = await Post.destroy({
+      where: { id: postId },
+    });
+    if(!isDeleted) { return res.status(400).json({ msg: "해당 포스트를 찾을 수 없습니다." }) };
+
+    return res.status(200).json({ msg: "포스트를 삭제하였습니다." });
+  } catch(error) {
+    console.error(error);
+    return res.status(400).json({ msg: "서버 내부 에러" });
+  };
+});
+
 module.exports = router;
