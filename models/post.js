@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
   Post.associate = (db) => {
     db.Post.belongsTo(db.User);  // 하나의 포스트에는 한 명의 작성자만 있다.
     db.Post.hasMany(db.Comment);  // 하나의 포스트에는 여러 개의 코멘트가 있다.
-    db.Post.belongsToMany(db.User, { through: "Likes", as: "Likers" }); // 하나의 포스트에는 여러 개의 좋아요가 있을 수 있다.
+    db.Post.hasMany(db.Like); // 하나의 포스트에는 여러 개의 좋아요가 있다.
   };
 
   return Post;
