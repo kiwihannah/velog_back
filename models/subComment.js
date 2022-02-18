@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const SubComment = sequelize.define("subcomment", {
-    comment: {
+    subComment: {
       type: DataTypes.TEXT,
       allowNull: false,
     }
