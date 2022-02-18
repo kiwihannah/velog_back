@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: false,
     },
-    desc: {
+    preview: {
       type: DataTypes.STRING(60),
       allowNull: false,
     }
