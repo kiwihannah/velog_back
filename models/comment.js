@@ -6,8 +6,12 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
-      comment: {
+      commentBody: {
         type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      isDeleted: {
+        type: DataTypes.TEXT, //Y or N
         allowNull: false,
       },
     },

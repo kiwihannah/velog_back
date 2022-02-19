@@ -13,6 +13,7 @@ app.use("/api", bodyParser.json(), router);
 
 // routes
 const postRouter = require("./routes/post");
+const commentRouter = require("./routes/comment");
 
 // connect DataBase
 const db = require('./models');
@@ -23,14 +24,10 @@ db.sequelize
   })
   .catch(console.error);
 
-router.get('/', (req, res) => {
-  res.send('Hi!');
+app.listen(3000, () => {
+  console.log('Velog 서버가 켜졌어요!');
 });
 
 app.use("/api/post", postRouter);
+app.use("/api/post/:postId/comment", commentRouter);
 
-app.listen(3000, () => {
-  console.log('서버가 켜졌어요!');
-});
-
-morgan('dev');
