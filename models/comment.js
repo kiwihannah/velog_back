@@ -2,9 +2,18 @@ module.exports = (sequelize, DataTypes) => {
   const Comment = sequelize.define(
     'comment',
     {
-      comment: {
+      parentsId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      commentBody: {
         type: DataTypes.TEXT,
         allowNull: false,
+      },
+      isDeleted: {
+        type: DataTypes.TEXT, //Y or N
+        allowNull: false,
+        default: 'N',
       },
     },
     {
