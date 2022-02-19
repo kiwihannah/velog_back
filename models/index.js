@@ -10,10 +10,11 @@ const sequelize = new Sequelize(
   config
 );
 
-db.User = require('./user')(sequelize, Sequelize);
-db.Post = require('./post')(sequelize, Sequelize);
-db.Comment = require('./comment')(sequelize, Sequelize);
-db.SubComment = require('./subComment')(sequelize, Sequelize);
+db.User = require("./user")(sequelize, Sequelize);
+db.Post = require("./post")(sequelize, Sequelize);
+db.Comment = require("./comment")(sequelize, Sequelize);
+db.SubComment = require("./subComment")(sequelize, Sequelize);
+db.Like = require("./like")(sequelize, Sequelize);
 
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
