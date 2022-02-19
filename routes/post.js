@@ -39,7 +39,7 @@ router.post("/", async(req, res) => {
     const isLiking = await Like.findOne({
       where: {
         postId: newPost.id,
-        UserId: sampleUserId,
+        likedId: sampleUserId,
       },
     });
 
@@ -92,7 +92,7 @@ router.patch("/:postId", async (req, res) => {
     const isLiking = await Like.findOne({
       where: {
         postId: newPost.id,
-        UserId: sampleUserId,
+        likedId: sampleUserId,
       },
     });
 
@@ -102,7 +102,7 @@ router.patch("/:postId", async (req, res) => {
     });
   } catch(error) {
     console.error(error);
-    return res.status(400).json({ msg: "서버 내부 에러" });
+    return res.status(500).json({ msg: "서버 내부 에러" });
   };
 });
 
@@ -119,7 +119,7 @@ router.delete("/:postId", async (req, res) => {
     return res.status(200).json({ msg: "포스트를 삭제하였습니다." });
   } catch(error) {
     console.error(error);
-    return res.status(400).json({ msg: "서버 내부 에러" });
+    return res.status(500).json({ msg: "서버 내부 에러" });
   };
 });
 
@@ -133,7 +133,7 @@ router.get("/:postId/likes", async (req, res) => {
     const [like, isLiked] = await Like.findOrCreate({
       where: { postId: postId },
       defaults: {
-        UserId: sampleUserId,
+        likedId: sampleUserId,
       }
     });
     if(!isLiked) { return res.status(400).send({ msg: "이미 좋아요를 한 포스트입니다." }); };
@@ -151,7 +151,7 @@ router.get("/:postId/likes", async (req, res) => {
     });
   } catch(error) {
     console.error(error);
-    return res.status(400).json({ msg: "서버 내부 에러" });
+    return res.status(500).json({ msg: "서버 내부 에러" });
   };
 });
 
@@ -165,7 +165,7 @@ router.delete("/:postId/likes", async (req, res) => {
     await Like.destroy({
       where: {
         postId: postId,
-        userId: sampleUserId,
+        likedId: sampleUserId,
       },
     });
 
@@ -182,7 +182,7 @@ router.delete("/:postId/likes", async (req, res) => {
     })
   } catch(error) {
     console.error(error);
-    return res.status(400).json({ msg: "서버 내부 에러" });
+    return res.status(500).json({ msg: "서버 내부 에러" });
   };
 });
 

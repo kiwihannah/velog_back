@@ -1,25 +1,25 @@
 module.exports = (sequelize, DataTypes) => {
-  const Post = sequelize.define("post", {
-    title: {
-      type: DataTypes.STRING(30),
-      allowNull: false,
+  const Post = sequelize.define(
+    'post',
+    {
+      title: {
+        type: DataTypes.STRING(30),
+        allowNull: false,
+      },
+      thumbnail: {
+        type: DataTypes.STRING(100),
+        allowNull: true,
+      },
+      context: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      preview: {
+        type: DataTypes.STRING(60),
+        allowNull: false,
+      },
     },
-    thumbnail: {
-      type: DataTypes.STRING(100),
-      allowNull: true,
-    },
-    context: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-    preview: {
-      type: DataTypes.STRING(60),
-      allowNull: false,
-    }
-  }, {
-    charset: "utf8mb4",
-    collate: "utf8mb4_general_ci",
-  });
+  );
 
   Post.associate = (db) => {
     db.Post.belongsTo(db.User);  // 하나의 포스트에는 한 명의 작성자만 있다.

@@ -15,19 +15,22 @@ app.use("/api", bodyParser.json(), router);
 const postRouter = require("./routes/post");
 
 // connect DataBase
-const db = require("./models");
-db.sequelize.sync()
+const db = require('./models');
+db.sequelize
+  .sync()
   .then(() => {
-    console.log("Velog DB 연결 성공...");
+    console.log('Velog DB 연결 성공...');
   })
   .catch(console.error);
 
-router.get("/", (req, res) => {
-  res.send("Hi!");
+router.get('/', (req, res) => {
+  res.send('Hi!');
 });
 
 app.use("/api/post", postRouter);
 
 app.listen(3000, () => {
-  console.log("서버가 켜졌어요!");
+  console.log('서버가 켜졌어요!');
 });
+
+morgan('dev');
