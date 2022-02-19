@@ -13,6 +13,8 @@ app.use("/api", bodyParser.json(), router);
 
 // routes
 const postRouter = require("./routes/post");
+const userRouter = require("./routes/users")
+const commentRouter = require("./routes/comment");
 
 // connect DataBase
 const db = require('./models');
@@ -22,12 +24,13 @@ db.sequelize
     console.log('Velog DB 연결 성공...');
   })
   .catch(console.error);
+app.listen(3000, () => { console.log('server listening on 3000'); });
 
-router.get('/', (req, res) => {
-  res.send('Hi!');
-});
+router.get('/', (req, res) => { res.send('Team #3 clone coding proj'); });
 
 app.use("/api/post", postRouter);
+app.use("/api", userRouter);
+app.use("/api/post/:postId/comment", commentRouter);
 
 app.listen(3000, () => {
   console.log('서버가 켜졌어요!');
