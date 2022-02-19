@@ -23,10 +23,9 @@ db.sequelize
     console.log('Velog DB 연결 성공...');
   })
   .catch(console.error);
+app.listen(3000, () => { console.log('server listening on 3000'); });
 
-app.listen(3000, () => {
-  console.log('Velog 서버가 켜졌어요!');
-});
+router.get('/', (req, res) => { res.send('Team #3 clone coding proj'); });
 
 app.use("/api/post", postRouter);
 app.use("/api/post/:postId/comment", commentRouter);
