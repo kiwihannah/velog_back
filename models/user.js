@@ -21,7 +21,6 @@ module.exports = (sequelize, DataTypes) => {
   User.associate = (db) => {
     db.User.hasMany(db.Post);  // 한 유저는 여러 개의 포스트를 작성할 수 있다.
     db.User.hasMany(db.Comment);  // 한 유저는 여러 개의 코멘트를 작성할 수 있다.
-    db.User.hasMany(db.SubComment);  // 한 유저는 여러 개의 대댓글을 작성할 수 있다.
   };
 
   return User;
