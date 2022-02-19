@@ -102,7 +102,7 @@ router.patch("/:postId", async (req, res) => {
     });
   } catch(error) {
     console.error(error);
-    return res.status(400).json({ msg: "서버 내부 에러" });
+    return res.status(500).json({ msg: "서버 내부 에러" });
   };
 });
 
@@ -119,7 +119,7 @@ router.delete("/:postId", async (req, res) => {
     return res.status(200).json({ msg: "포스트를 삭제하였습니다." });
   } catch(error) {
     console.error(error);
-    return res.status(400).json({ msg: "서버 내부 에러" });
+    return res.status(500).json({ msg: "서버 내부 에러" });
   };
 });
 
@@ -151,7 +151,7 @@ router.get("/:postId/likes", async (req, res) => {
     });
   } catch(error) {
     console.error(error);
-    return res.status(400).json({ msg: "서버 내부 에러" });
+    return res.status(500).json({ msg: "서버 내부 에러" });
   };
 });
 
@@ -182,7 +182,7 @@ router.delete("/:postId/likes", async (req, res) => {
     })
   } catch(error) {
     console.error(error);
-    return res.status(400).json({ msg: "서버 내부 에러" });
+    return res.status(500).json({ msg: "서버 내부 에러" });
   };
 });
 
