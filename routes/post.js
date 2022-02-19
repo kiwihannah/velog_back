@@ -39,7 +39,7 @@ router.post("/", async(req, res) => {
     const isLiking = await Like.findOne({
       where: {
         postId: newPost.id,
-        UserId: sampleUserId,
+        likedId: sampleUserId,
       },
     });
 
@@ -92,7 +92,7 @@ router.patch("/:postId", async (req, res) => {
     const isLiking = await Like.findOne({
       where: {
         postId: newPost.id,
-        UserId: sampleUserId,
+        likedId: sampleUserId,
       },
     });
 
@@ -133,7 +133,7 @@ router.get("/:postId/likes", async (req, res) => {
     const [like, isLiked] = await Like.findOrCreate({
       where: { postId: postId },
       defaults: {
-        UserId: sampleUserId,
+        likedId: sampleUserId,
       }
     });
     if(!isLiked) { return res.status(400).send({ msg: "이미 좋아요를 한 포스트입니다." }); };
@@ -165,7 +165,7 @@ router.delete("/:postId/likes", async (req, res) => {
     await Like.destroy({
       where: {
         postId: postId,
-        userId: sampleUserId,
+        likedId: sampleUserId,
       },
     });
 
