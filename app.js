@@ -13,6 +13,7 @@ app.use("/api", bodyParser.json(), router);
 
 // routes
 const postRouter = require("./routes/post");
+const userRouter = require("./routes/users")
 
 // connect DataBase
 const db = require('./models');
@@ -28,6 +29,7 @@ router.get('/', (req, res) => {
 });
 
 app.use("/api/post", postRouter);
+app.use("/api", userRouter);
 
 app.listen(3000, () => {
   console.log('서버가 켜졌어요!');
