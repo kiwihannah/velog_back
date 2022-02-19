@@ -2,6 +2,10 @@ module.exports = (sequelize, DataTypes) => {
   const Comment = sequelize.define(
     'comment',
     {
+      parentsId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
       comment: {
         type: DataTypes.TEXT,
         allowNull: false,
