@@ -32,5 +32,3 @@ app.use("/api/post", postRouter);
 app.listen(3000, () => {
   console.log('서버가 켜졌어요!');
 });
-
-morgan('dev');
