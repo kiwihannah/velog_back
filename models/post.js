@@ -19,18 +19,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
     },
-    thumbnail: {
-      type: DataTypes.STRING(100),
-      allowNull: true,
-    },
-    context: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-    },
-    preview: {
-      type: DataTypes.STRING(60),
-      allowNull: false,
-    }
   );
 
   Post.associate = (db) => {
