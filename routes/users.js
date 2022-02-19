@@ -2,7 +2,6 @@ const express = require('express');
 const { User } = require('../models')
 const bcrypt = require('bcrypt');
 const Joi = require('joi');
-const joiPassword = require("joi-password");
 const jwt = require('jsonwebtoken');
 const authMiddlleware = require('../middlewares/auth-middleware');
 const router = express.Router();
@@ -15,10 +14,10 @@ const postUsersSchemas = Joi.object({
         .pattern(new RegExp('^[a-zA-Z0-9가-힣]{3,30}$')),
     password: Joi.string()
         .required()
-        .pattern(new RegExp('^(?=.*[0-9])(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{10,30}$')),
+        .pattern(new RegExp('^(?=.*[0-9])(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{8,30}$')),
     confirmPassword: Joi.string()
         .required()
-        .pattern(new RegExp('^(?=.*[0-9])(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{10,30}$'))
+        .pattern(new RegExp('^(?=.*[0-9])(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{8,30}$')),
 });
 
 
@@ -70,7 +69,7 @@ const postAuthSchemas = Joi.object({
     nickname: Joi.string()
         .required()
         .pattern(new RegExp('^[a-zA-Z0-9가-힣]{3,30}$')),
-    password: Joi.string().min(4).max(30),
+    password: Joi.string().required().pattern(new RegExp('^(?=.*[0-9])(?=.*[a-zA-Z])[0-9a-zA-Z!@#$%^&*]{8,30}$')),
 });
 
 // 로그인 구현
