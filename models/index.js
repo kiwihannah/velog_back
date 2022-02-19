@@ -15,11 +15,9 @@ db.Post = require("./post")(sequelize, Sequelize);
 db.Comment = require("./comment")(sequelize, Sequelize);
 db.Like = require("./like")(sequelize, Sequelize);
 
-Object.keys(db).forEach((modelName) => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
-});
+// Object.keys(db).forEach((modelName) => {
+//   if (db[modelName].associate) db[modelName].associate(db);
+// });
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;

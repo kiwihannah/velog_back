@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       isDeleted: {
         type: DataTypes.TEXT, //Y or N
         allowNull: false,
+        default: 'N',
       },
     },
     {

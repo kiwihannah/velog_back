@@ -5,18 +5,25 @@ const express = require('express');
 const sequelize = require('sequelize');
 const router = express.Router();
 
-const { Post, User, Like, Comment } = require('../models');
+const { Post, Comment } = require('../models');
 
-// CREATE api/post/13/comment/2
+// CREATE api/post/3/comment/2
 router.post('/:commentId', async (req, res) => { 
+  const { commentBody } = req.body;
+  const { commentId } = req.params;
   try {
-    const { parentsId, commentBody } = req.body;
-    const { commentId } = req.params;
-    if (commentId) parentsId = commentId;
-    await Comment.create({
-      parentsId: parentsId ? parentsId : 0,
-      commentBody,
-    });
+    if (Number(commentId) !== 0) {
+        await Comment.create({
+            parentsId: Number(commentId),
+            commentBody,
+            isDeleted : 'N',
+        });
+    } else {
+        await Comment.create({
+            commentBody,
+            isDeleted : 'N',
+        });
+    }
     return res.status(200).json({ msg: '댓글이 등록되었습니다.' });
   } catch (error) {
     console.error(error);
