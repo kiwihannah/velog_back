@@ -2,9 +2,13 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const cors = require("cors");
+const path = require("path");
 
 const app = express();
 const router = express.Router();
+
+// 이미지 경로
+app.use('/', express.static(path.join(__dirname, 'images')));
 
 // middlewares
 app.use(morgan("dev"));
@@ -15,6 +19,7 @@ app.use("/api", bodyParser.json(), router);
 const postRouter = require("./routes/post");
 const userRouter = require("./routes/users")
 const commentRouter = require("./routes/comment");
+const imageRouter = require("./routes/image");
 
 // connect DataBase
 const db = require('./models');
@@ -24,11 +29,14 @@ db.sequelize
     console.log('Velog DB 연결 성공...');
   })
   .catch(console.error);
-app.listen(3000, () => { console.log('server listening on 3000'); });
 
 router.get('/', (req, res) => { res.send('Team #3 clone coding proj'); });
 
 app.use("/api/post", postRouter);
 app.use("/api", userRouter);
 app.use("/api/post/:postId/comment", commentRouter);
+app.use("/api/image", imageRouter);
 
+app.listen(8023, () => {
+  console.log('서버가 켜졌어요!');
+});
