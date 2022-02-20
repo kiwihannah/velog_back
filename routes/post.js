@@ -5,16 +5,31 @@ const router = express.Router();
 
 const { Post, User, Like } = require("../models");
 
+function getThumbnail(HTML) {
+  const imgRex = /<img.*?src="(.*?)"[^>]+>/g;
+  let thumbnail = "";
+  let img;
+
+  while((img = imgRex.exec(HTML))) {
+     thumbnail = img[1];
+     break;
+  };
+
+  return thumbnail;
+};
+
 // 포스트 작성 POST /api/post
 router.post("/", async(req, res) => {
   try {
     const sampleUserId = 1; // 임시
 
-    const { title, thumbnail, preview, context } = req.body;
+    const { title, context, preview } = req.body;
 
     if(!title || !preview || !context) {
       return res.status(400).json({ msg: "제목, 내용, 미리보기 중 전달되지 않은 것이 있습니다." });
     };
+
+    const thumbnail = getThumbnail(context);
 
     const post = await Post.create({
       title,
@@ -53,7 +68,7 @@ router.post("/", async(req, res) => {
   };
 });
 
-// 게시글 수정 PATCH /api/post/13
+// 게시글 수정 PUT /api/post/13
 router.patch("/:postId", async (req, res) => {
   try {
     const sampleUserId = 1;
@@ -69,6 +84,8 @@ router.patch("/:postId", async (req, res) => {
       where: { id: postId },
     });
     if(!prevPost) { return res.status(400).json({ msg: "해당 포스트를 찾을 수 없습니다." }); };
+
+    const thumbnail = getThumbnail(context);
 
     await prevPost.update({
       title,
