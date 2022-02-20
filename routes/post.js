@@ -75,7 +75,7 @@ router.patch("/:postId", async (req, res) => {
 
     const { postId } = req.params;
 
-    const { title, thumbnail, preview, context } = req.body;
+    const { title, preview, context } = req.body;
     if(!title || !preview || !context) {
       return res.status(400).json({ msg: "제목, 내용, 미리보기 중 전달되지 않은 것이 있습니다." });
     };
