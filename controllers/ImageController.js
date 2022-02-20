@@ -28,4 +28,18 @@ module.exports = {
   uploadImageInS3: function(req, res) {
     res.json(req.file.location);
   },
+
+  // context에서 썸네일 추출
+  getThumbnail: function(HTML) {
+    const imgRex = /<img.*?src="(.*?)"[^>]+>/g;
+    let thumbnail = "";
+    let img;
+
+    while((img = imgRex.exec(HTML))) {
+       thumbnail = img[1];
+       break;
+    };
+
+    return thumbnail;
+  }
 }
