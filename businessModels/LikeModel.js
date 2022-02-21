@@ -8,12 +8,20 @@ module.exports = {
     like: async (data, callback) => {
       try {
         const [like, isLiked] = await Like.findOrCreate({
-          where: { postId: data.postId },
+          where: {
+            postId: data.postId,
+            likedId: data.sampleUserId,
+          },
           defaults: {
             likedId: data.sampleUserId,
           }
         });
         if(!isLiked) { return callback({ msg: "이미 좋아요를 한 포스트입니다." }); };
+
+        const post = await Post.findOne({
+          where: { id: data.postId },
+        });
+        post.increment("likeCnt");
 
         callback(true);
       } catch(error) {
@@ -44,9 +52,7 @@ module.exports = {
       try {
         const post = await Post.findOne({
           where: { id: data },
-          attributes: [
-            [sequelize.literal(`(SELECT COUNT(*) FROM Likes WHERE Likes.postId=${data})`), "likersCount"],
-          ],
+          attributes: ["likeCnt"],
         });
         if(!post) {
           return callback({ msg: "존재하지 않는 포스트입니다." });
@@ -69,6 +75,12 @@ module.exports = {
             likedId: data.sampleUserId,
           },
         });
+
+        const post = await Post.findOne({
+          where: { id: data.postId },
+        });
+
+        post.decrement("likeCnt");
   
         callback(true);
       } catch(error) {
