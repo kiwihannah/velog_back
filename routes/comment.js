@@ -4,13 +4,14 @@
 const express = require('express');
 const sequelize = require('sequelize');
 const router = express.Router();
-const { Comment } = require('../models');
-let isDeleted = 'N'; const userId = 3;
+const { Comment, User } = require('../models');
+let isDeleted = 'N'; 
 
 // CREATE api/post/3/comment/2
 router.post('/:postId/comment/:commentId', async (req, res) => { 
   const { commentBody } = req.body;
-  const { commentId, postId } = req.params;
+  const { commentId } = req.params;
+  const userId = 3;
   if (!commentBody) return res.status(400).json({ msg: '댓글 내용이 없습니다.' });
   const isParents = await Comment.findAll({where: [{ id : commentId }, { isDeleted }] });
   if (!isParents.length && Number(commentId) !== 0)  return res.status(400).json({ msg: '대댓글을 작성할 수 없는 댓글 입니다.' });
@@ -18,7 +19,8 @@ router.post('/:postId/comment/:commentId', async (req, res) => {
     await Comment.create({
       parentsId: Number(commentId) !== 0 ? commentId : 0,
       commentBody,
-      isDeleted
+      isDeleted,
+      userId
     });
     return res.status(200).json({ msg: '댓글이 등록되었습니다.' });
   } catch (error) {
@@ -31,7 +33,7 @@ router.post('/:postId/comment/:commentId', async (req, res) => {
 router.get("/:postId/comments", async (req, res) => {
   const { postId } = req.params;
   try {
-    const comment = await Comment.findAll({where: [{ postId }, { isDeleted }] });
+    const comment = await Comment.findAll({where: [{ postId }, { isDeleted }], });
     console.log(comment)
     return res.status(200).send({ comment, });
   } catch(error) {
