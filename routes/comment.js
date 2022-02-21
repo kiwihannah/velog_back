@@ -42,12 +42,12 @@ router.get("/:postId/comments", async (req, res) => {
   };
 });
 
-// GET /api/post/3/comment/2 (child)
+// GET 자식 코멘트 모두 불러오기 /api/post/3/comment/2 (child)
 router.get("/:postId/comments/:commentId", async (req, res) => {
     const { commentId } = req.params;
     try {
       const comment = await Comment.findAll({where: [{ parentsId : commentId }, { isDeleted }] });
-      return res.status(200).json({ comment, userId });
+      return res.status(200).json({ comment });
     } catch(error) {
       console.error(error);
       return res.status(500).json({ msg: "서버 내부 에러" });
