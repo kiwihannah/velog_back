@@ -37,7 +37,7 @@ app.use("/api", userRouter);
 app.use("/api/post", commentRouter);
 app.use("/api/image", imageRouter);
 
-app.listen(3000, () => {
+app.listen(process.env.PORT, () => {
   console.log('서버가 켜졌어요!');
 });
 
