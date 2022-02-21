@@ -12,19 +12,15 @@ router.post('/:postId/comment/:commentId', async (req, res) => {
   const { commentBody } = req.body;
   const { commentId, postId } = req.params;
   if (!commentBody) return res.status(400).json({ msg: '댓글 내용이 없습니다.' });
+  const isParents = await Comment.findAll({where: [{ id : commentId }, { isDeleted }] });
+  if (!isParents.length && Number(commentId) !== 0)  return res.status(400).json({ msg: '대댓글을 작성할 수 없는 댓글 입니다.' });
   try {
-    const isParents = await Comment.findAll({where: [{ id : commentId }, { isDeleted }] });
-    console.log(isParents)
-    if (!isParents.length) {
-      return res.status(400).json({ msg: '대댓글을 작성할 수 없는 댓글 입니다.' });
-    } else {
-      await Comment.create({
-        parentsId: Number(commentId) !== 0 ? commentId : 0,
-        commentBody,
-        isDeleted
-      });
-      return res.status(200).json({ msg: '댓글이 등록되었습니다.' });
-    }
+    await Comment.create({
+      parentsId: Number(commentId) !== 0 ? commentId : 0,
+      commentBody,
+      isDeleted
+    });
+    return res.status(200).json({ msg: '댓글이 등록되었습니다.' });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ msg: '서버 내부 에러' });
