@@ -47,22 +47,20 @@ module.exports = {
       const sampleUserId = 1;
       const { postId } = req.params;
 
-      let post = {};
-
        PostModel.get.post({ postId }, GET_POST_RESULT => {
         if(GET_POST_RESULT.msg) {
           return res.status(400).json(GET_POST_RESULT.msg);
         };
 
-        post = GET_POST_RESULT;
-      });
-
-      LikeModel.get.isLiking({ postId, userId: sampleUserId }, GET_ISLIKING_RESULT => {
-        if(GET_ISLIKING_RESULT.msg) { return res.status(400).json(GET_ISLIKING_RESULT) };
-
-        return res.status(200).json({
-          post,
-          isLiking: GET_ISLIKING_RESULT,
+        LikeModel.get.isLiking({ postId, userId: sampleUserId }, GET_ISLIKING_RESULT => {
+          if(GET_ISLIKING_RESULT.msg) {
+            return res.status(400).json(GET_ISLIKING_RESULT.msg);
+          };
+          
+          return res.status(200).json({
+            post: GET_POST_RESULT,
+            isLiking: GET_ISLIKING_RESULT,
+          });
         });
       });
     },

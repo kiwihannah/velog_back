@@ -1,7 +1,7 @@
 const sequelize = require("sequelize");
 
 // tables
-const { Post, User, Like } = require("../models");
+const { Post, User } = require("../models");
 
 module.exports = {
   create: {
@@ -76,8 +76,8 @@ module.exports = {
         const post = await Post.findOne({
           where: { id: data.postId },
           attributes: [
-            "id", "title", "thumbnail", "context", "createdAt",
-            [sequelize.literal(`(SELECT COUNT(*) FROM Likes WHERE Likes.postId=${data.postId})`), "likersCnt"],
+            "id", "title", "thumbnail", "context", "createdAt", "likeCnt",
+            [sequelize.literal(`(SELECT COUNT(*) FROM Comments WHERE Comments.postId=${data.postId})`), "commentCnt"],
           ],
           include: {
             model: User,
@@ -96,12 +96,13 @@ module.exports = {
       try {
         const posts = await Post.findAll({
           attributes: [
-            "id", "title", "preview", "thumbnail", "likeCnt",
+            "id", "title", "preview", "thumbnail", "likeCnt", "createdAt"
           ],
           include: {
             model: User,
             attributes: ["id", "nickname"],
           },
+          order: [["createdAt", "DESC"]],
         });
 
         callback(posts);
@@ -116,7 +117,7 @@ module.exports = {
         const posts = await Post.findAll({
           where: { userId: data },
           attributes: [
-            "id", "title", "preview", "thumbnail", "likeCnt",
+            "id", "title", "preview", "thumbnail", "likeCnt", "createdAt"
           ],
           include: {
             model: User,
