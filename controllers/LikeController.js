@@ -6,7 +6,6 @@ module.exports = {
     like: (req, res) => {
       const { postId } = req.params;
       const sampleUserId = 1;
-      
 
       LikeModel.create.like({ postId, sampleUserId }, CREATE_LIKE_RESULT => {
         if(CREATE_LIKE_RESULT.msg) {

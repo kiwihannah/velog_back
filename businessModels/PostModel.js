@@ -1,7 +1,7 @@
 const sequelize = require("sequelize");
 
 // tables
-const { Post, User } = require("../models");
+const { Post, User, Like } = require("../models");
 
 module.exports = {
   create: {
@@ -77,7 +77,7 @@ module.exports = {
           where: { id: data.postId },
           attributes: [
             "id", "title", "thumbnail", "context", "createdAt",
-            [sequelize.literal(`(SELECT COUNT(*) FROM Likes WHERE Likes.postId=${data.postId})`), "likersCount"],
+            [sequelize.literal(`(SELECT COUNT(*) FROM Likes WHERE Likes.postId=${data.postId})`), "likersCnt"],
           ],
           include: {
             model: User,
@@ -91,6 +91,46 @@ module.exports = {
         callback({ msg: "포스트 가져오기 에러" });
       };
     },
+
+    posts: async (callback) => {
+      try {
+        const posts = await Post.findAll({
+          attributes: [
+            "id", "title", "preview", "thumbnail", "likeCnt",
+          ],
+          include: {
+            model: User,
+            attributes: ["id", "nickname"],
+          },
+        });
+
+        callback(posts);
+      } catch(error) {
+        console.error(error);
+        callback({ msg: "전체 포스트 조회 에러" });
+      }
+    },
+
+    userPosts: async (data, callback) => {
+      try {
+        const posts = await Post.findAll({
+          where: { userId: data },
+          attributes: [
+            "id", "title", "preview", "thumbnail", "likeCnt",
+          ],
+          include: {
+            model: User,
+            attributes: ["id", "nickname"],
+          },
+          order: [["createdAt", "DESC"]],
+        })
+
+        callback(posts);
+      } catch(error) {
+        console.error(error);
+        callback({ msg: "특정 유저의 포스트 조회 에러" });
+      }
+    }
   },
 
   delete: {
