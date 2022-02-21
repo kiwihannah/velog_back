@@ -37,8 +37,6 @@ app.use("/api", userRouter);
 app.use("/api/post", commentRouter);
 app.use("/api/image", imageRouter);
 
-app.listen(process.env.PORT, () => {
-  console.log('서버가 켜졌어요!');
-});
+app.listen(process.env.PORT, () => { console.log('서버가 켜졌어요!'); });
 
 module.exports = app;
