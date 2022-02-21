@@ -78,16 +78,5 @@ module.exports = {
 
       return res.status(200).json({ msg: "포스트를 삭제하였습니다." });
     }),
-    // post: (req, res) => {
-    //   const { postId } = req.params;
-
-    //   PostModel.delete.post(postId, DELETE_POST_RESULT => {
-    //     if(DELETE_POST_RESULT.msg) {
-    //       return res.status(400).json(DELETE_POST_RESULT);
-    //     }
-
-    //     return res.status(200).json({ msg: "포스트를 삭제하였습니다." });
-    //   });
-    // },
   }
 };

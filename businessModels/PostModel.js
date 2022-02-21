@@ -123,21 +123,5 @@ module.exports = {
 
       return true;
     }),
-
-    // post: async (data, callback) => {
-    //   try {
-    //     const isDeleted = await Post.destroy({
-    //        where: { id: data },
-    //      });
-    //      if(!isDeleted) {
-    //        return callback({ msg: "해당 포스트를 찾을 수 없습니다." })
-    //     };
-
-    //     callback(true);
-    //   } catch(error) {
-    //     console.error(error);
-    //     callback({ msg: "포스트 삭제 에러" });
-    //   }
-    // },
   },
 };
