@@ -13,7 +13,8 @@ router.post('/:postId/comment/:commentId', async (req, res) => {
   const { commentId } = req.params;
   const userId = 3;
   if (!commentBody) return res.status(400).json({ msg: '댓글 내용이 없습니다.' });
-  const isParents = await Comment.findAll({where: [{ id : commentId }, { isDeleted }] });
+  const isParents = await Comment.findAll({where: [{ id : commentId }, { isDeleted }],
+    });
   if (!isParents.length && Number(commentId) !== 0)  return res.status(400).json({ msg: '대댓글을 작성할 수 없는 댓글 입니다.' });
   try {
     await Comment.create({
@@ -33,7 +34,16 @@ router.post('/:postId/comment/:commentId', async (req, res) => {
 router.get("/:postId/comments", async (req, res) => {
   const { postId } = req.params;
   try {
-    const comment = await Comment.findAll({where: [{ postId }, { isDeleted }], });
+    const comment = await Comment.findAll({
+      where: {
+        postId,
+        isDeleted
+      },
+      include: {
+        model: User,
+        attributes: ["id", "nickname"],
+      },
+    });
     console.log(comment)
     return res.status(200).send({ comment, });
   } catch(error) {
