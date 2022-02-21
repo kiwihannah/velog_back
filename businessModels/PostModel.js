@@ -75,10 +75,7 @@ module.exports = {
       try {
         const post = await Post.findOne({
           where: { id: data.postId },
-          attributes: [
-            "id", "title", "thumbnail", "context", "createdAt",
-            [sequelize.literal(`(SELECT COUNT(*) FROM Likes WHERE Likes.postId=${data.postId})`), "likersCnt"],
-          ],
+          attributes: ["id", "title", "thumbnail", "context", "createdAt", "likeCnt"],
           include: {
             model: User,
             attributes: ["id", "nickname"],
