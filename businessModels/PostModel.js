@@ -102,6 +102,7 @@ module.exports = {
             model: User,
             attributes: ["id", "nickname"],
           },
+          order: [["createdAt", "DESC"]],
         });
 
         callback(posts);
