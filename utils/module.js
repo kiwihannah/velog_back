@@ -5,6 +5,10 @@ module.exports = {
         return await asyncFn(req, res, next);
       } catch(error) {
         console.error('Error from ControllerAsyncWrapper : ', error);
+
+        if(error.msg) {
+          return res.status(400).json(error);
+        }
         return res.status(500).json({ msg: error.message });
       };
     });
@@ -15,9 +19,7 @@ module.exports = {
       try {
         return await asyncFn(req, res, next);
       } catch(error) {
-        throw new Error(error);
-        // return error;
-        // return res.status(500).json({ msg: "Model error" });
+        throw (error);
       };
     });
   },

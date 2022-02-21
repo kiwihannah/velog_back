@@ -2,6 +2,7 @@ const sequelize = require("sequelize");
 
 // tables
 const { Post, Like } = require("../models");
+const { ModelAsyncWrapper } = require("../utils/module");
 
 module.exports = {
   create: {
@@ -32,38 +33,36 @@ module.exports = {
   },
 
   get: {
-    isLiking: async (data, callback) => {
-      try {
-        const isLiking = await Like.findOne({
-          where: {
-            postId: data.postId,
-            likedId: data.userId,
-          },
-        });
+    isLiking: ModelAsyncWrapper(async (data) => {
+      const isLiking = await Like.findOne({
+        where: {
+          postId: data.postId,
+          likedId: data.userId,
+        },
+      }); 
 
-        callback(isLiking ? true : false);
-      } catch(error) {
-        console.error(error);
-        callback({ msg: "좋아요 확인 에러" });
-      }
-    },
+      return isLiking ? true : false;
+    }),
 
-    likeCount: async(data, callback) => {
-      try {
-        const post = await Post.findOne({
-          where: { id: data },
-          attributes: ["likeCnt"],
-        });
-        if(!post) {
-          return callback({ msg: "존재하지 않는 포스트입니다." });
-        }
+    likeCount: ModelAsyncWrapper(async (data) => {
+      
+    }),
+    // likeCount: async(data, callback) => {
+    //   try {
+    //     const post = await Post.findOne({
+    //       where: { id: data },
+    //       attributes: ["likeCnt"],
+    //     });
+    //     if(!post) {
+    //       return callback({ msg: "존재하지 않는 포스트입니다." });
+    //     }
 
-        callback(post);
-      } catch(error) {
-        console.error(error);
-        callback({ msg: "좋아요 수 카운트 에러" });
-      }
-    },
+    //     callback(post);
+    //   } catch(error) {
+    //     console.error(error);
+    //     callback({ msg: "좋아요 수 카운트 에러" });
+    //   }
+    // },
   },
 
   delete: {
