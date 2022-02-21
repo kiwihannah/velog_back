@@ -4,26 +4,24 @@
 const express = require('express');
 const sequelize = require('sequelize');
 const router = express.Router();
-
-const { Post, Comment } = require('../models');
+const { Comment, User } = require('../models');
+let isDeleted = 'N'; 
 
 // CREATE api/post/3/comment/2
-router.post('/:commentId', async (req, res) => { 
+router.post('/:postId/comment/:commentId', async (req, res) => { 
   const { commentBody } = req.body;
   const { commentId } = req.params;
+  const userId = 3;
+  if (!commentBody) return res.status(400).json({ msg: '댓글 내용이 없습니다.' });
+  const isParents = await Comment.findAll({where: [{ id : commentId }, { isDeleted }] });
+  if (!isParents.length && Number(commentId) !== 0)  return res.status(400).json({ msg: '대댓글을 작성할 수 없는 댓글 입니다.' });
   try {
-    if (Number(commentId) !== 0) {
-        await Comment.create({
-            parentsId: Number(commentId),
-            commentBody,
-            isDeleted : 'N',
-        });
-    } else {
-        await Comment.create({
-            commentBody,
-            isDeleted : 'N',
-        });
-    }
+    await Comment.create({
+      parentsId: Number(commentId) !== 0 ? commentId : 0,
+      commentBody,
+      isDeleted,
+      userId
+    });
     return res.status(200).json({ msg: '댓글이 등록되었습니다.' });
   } catch (error) {
     console.error(error);
@@ -31,32 +29,25 @@ router.post('/:commentId', async (req, res) => {
   }
 });
 
-// GET /api/post/3/comment
-router.get("/", async (req, res) => {
+// GET 부모 코멘트 모두 불러오기 /api/post/3/comment
+router.get("/:postId/comments", async (req, res) => {
+  const { postId } = req.params;
   try {
-    const comment = await Comment.find({ where: { postId } });
-    const replyCnt = await Comment.find({ where: { parentsId : postId } });
-
-    return res.status(200).send({ // moment("20120620", "YYYYMMDD").fromNow();
-      comment,
-      replyCnt: replyCnt.length,
-    });
-
+    const comment = await Comment.findAll({where: [{ postId }, { isDeleted }], });
+    console.log(comment)
+    return res.status(200).send({ comment, });
   } catch(error) {
     console.error(error);
     return res.status(500).json({ msg: "서버 내부 에러" });
   };
 });
 
-// GET /api/post/3/comment/2
-router.get("/:commentId", async (req, res) => {
+// GET /api/post/3/comment/2 (child)
+router.get("/:postId/comments/:commentId", async (req, res) => {
     const { commentId } = req.params;
     try {
-      const comment = await Comment.find({ where: { parentsId : commentId } });
-      return res.status(200).json({ 
-        comment,
-      });
-  
+      const comment = await Comment.findAll({where: [{ parentsId : commentId }, { isDeleted }] });
+      return res.status(200).json({ comment, userId });
     } catch(error) {
       console.error(error);
       return res.status(500).json({ msg: "서버 내부 에러" });
@@ -64,14 +55,15 @@ router.get("/:commentId", async (req, res) => {
 });
 
 // MODIFY api/post/13/comment/2
-router.patch('/:commentId', async (req, res) => {
+router.patch('/:postId/comment/:commentId', async (req, res) => {
   try {
     const { commentId } = req.params;
     const { commentBody } = req.body;
 
+    // 자기 댓글이 아닐경우 msg : '본인 댓글만 수정할 수 있습니다.'
     if (!commentBody) return res.status(400).json({ msg: '댓글 내용이 없습니다.' });
 
-    const prevComment = await Post.findOne({ where: { id: commentId } });
+    const prevComment = await Comment.findOne({ where: { id: commentId } });
     if (!prevComment) {
       return res.status(400).json({ msg: '해당 댓글을 찾을 수 없습니다.' });
     } else {
@@ -84,16 +76,20 @@ router.patch('/:commentId', async (req, res) => {
   }
 });
 
-// DELETE api/post/13/comment/2
-router.delete('/:commentId', async (req, res) => {
+// PATCH api/post/3/comment/6/disabled
+router.patch('/:postId/comment/:commentId/disabled', async (req, res) => {
   try {
     const { commentId } = req.params;
 
-    const isDeleted = await Comment.destroy({ where: { id: commentId } });
-    if (!isDeleted) {
+    const prevComment = await Comment.findOne({ where: { id: commentId } });
+    // 자기 댓글이 아닐경우 msg : '본인 댓글만 삭제할 수 있습니다.'
+    if (!prevComment) {
       return res.status(400).json({ msg: '해당 댓글을 찾을 수 없습니다.' });
+    } else {
+      const isDeleted = 'Y';
+      await prevComment.update({ isDeleted });
+      return res.status(200).json({ msg: '댓글을 삭제하였습니다.' });
     }
-    return res.status(200).json({ msg: '댓글을 삭제하였습니다.' });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ msg: '서버 내부 에러' });
