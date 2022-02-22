@@ -103,7 +103,6 @@ module.exports = {
     UserConfirm: {
         get: async (req, res) => {
             const { user } = res.locals;
-            console.log(user);
             res.send({
                 user: {
                     nickname: user.nickname,
