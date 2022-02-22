@@ -132,8 +132,7 @@ module.exports = {
     Usermodification: {
         patch: async (req, res) => {
             try {
-                const { nickname, password, confirmPassword } = await postUsersSchemas.validateAsync(req.body);;
-                const confirmUser = User.findOne({ where: { nickname } })
+                const { nickname, password, confirmPassword } = await postUsersSchemas.validateAsync(req.body);
                 const encryptedPassword = bcrypt.hashSync(password, 10);
                 if (password !== confirmPassword) {
                     return res.status(400).json({ msg: '비밀번호를 확인해주세요.' });
