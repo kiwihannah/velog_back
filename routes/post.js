@@ -21,6 +21,6 @@ router.delete("/post/:postId/likes", authMiddleware, LikeController.delete.like)
 
 // /api/posts
 router.get("/posts", PostController.get.posts);                                       // 전체 포스트 조회 GET /api/posts
-router.get("/posts/:userId", PostController.get.userPosts);                           // 특정 유저의 포스트 조회 GET /api/posts/:userId
+router.get("/user/:userId/posts", PostController.get.userPosts);                      // 특정 유저의 포스트 조회 GET /api/user/:userId/posts
 
 module.exports = router;
