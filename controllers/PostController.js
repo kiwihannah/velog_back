@@ -8,7 +8,7 @@ const LikeModel = require("../businessModels/LikeModel");
 module.exports = {
   create: {
     post: ControllerAsyncWrapper(async (req, res) => {
-      const sampleUserId = 1;
+      const userId = res.locals.user.id;
       const { title, context, preview } = req.body;
 
       let thumbnail = "";
@@ -16,7 +16,7 @@ module.exports = {
         thumbnail = result;
       });
 
-      const id = await PostModel.create.post({ title, context, preview, thumbnail, sampleUserId });
+      const id = await PostModel.create.post({ title, context, preview, thumbnail, userId });
 
       return res.status(201).json({ postId: id });
     }),
@@ -24,7 +24,7 @@ module.exports = {
 
   update: {
     post: ControllerAsyncWrapper(async (req, res) => {
-      const sampleUserId = 1;
+      const userId = res.locals.user.id;
       const { postId } = req.params;
       const { title, context, preview } = req.body;
 
@@ -33,7 +33,7 @@ module.exports = {
       });
 
       const id = await PostModel.update.post(
-        { postId, title, context, preview, thumbnail, sampleUserId}
+        { postId, title, context, preview, thumbnail, userId }
       );
 
       return res.status(201).json({ postId: id });
@@ -42,12 +42,12 @@ module.exports = {
 
   get: {
     post: ControllerAsyncWrapper(async (req, res) => {
-      const sampleUserId = 1;
+      const userId = res.locals.user.id;
       const { postId } = req.params;
 
       const post = await PostModel.get.post(postId);
 
-      const isLiking = await LikeModel.get.isLiking({ postId, userId: sampleUserId });
+      const isLiking = await LikeModel.get.isLiking({ postId, userId });
 
       return res.status(200).json({
         post: post,

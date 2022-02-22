@@ -2,6 +2,7 @@ const { User } = require('../models')
 const bcrypt = require('bcrypt');
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
+const user = require('../models/user');
 require('dotenv').config();
 
 // Joi
@@ -90,6 +91,8 @@ module.exports = {
                 }
                 const token = jwt.sign({ nickname: user.nickname }, process.env.SECRET_KEY);
                 res.send({
+                    nickname:user.nickname,
+                    id:user.id,
                     token,
                 });
             } catch (error) {
@@ -105,8 +108,47 @@ module.exports = {
             res.send({
                 user: {
                     nickname: user.nickname,
+                    id: user.id,
                 },
             });
         }
-    }
+    },
+    DeleteUser: {
+        delete: async (req, res) => {
+            try {
+                const { nickname } = res.locals.user;
+                const { password } = req.body;
+                const Finduser = await User.findOne({ where: { nickname } });
+                const isPasswordSync = bcrypt.compareSync(password, Finduser.password);
+                if (!isPasswordSync) {
+                    return res.status(400).json({ msg: "패스워드가 잘못되었습니다." });
+                }
+                await User.destroy({ where: { nickname } });
+                return res.status(200).json({ msg: '회원정보가 삭제되었습니다.' });
+            } catch (error) {
+                console.error(error);
+                return res.status(400).json({ msg: '요청한 형식이 올바르지 않습니다.' });
+            }
+
+        }
+    },
+    Usermodification: {
+        patch: async (req, res) => {
+            try {
+                const { nickname, password, confirmPassword } = await postUsersSchemas.validateAsync(req.body);
+                const encryptedPassword = bcrypt.hashSync(password, 10);
+                if (password !== confirmPassword) {
+                    return res.status(400).json({ msg: '비밀번호를 확인해주세요.' });
+                };
+                if (nickname === password) {
+                    return res.status(400).json({ msg: "닉네임과 비밀번호가 같습니다." })
+                };
+                await User.update({ password: encryptedPassword }, { where: { nickname } });
+                return res.status(201).json({ msg: '정보를 수정하였습니다.' });
+            } catch (error) {
+                console.log(error);
+                res.status(400).json({ msg: '요청한 형식이 올바르지 않습니다.' });
+            }
+        }
+    },
 };
