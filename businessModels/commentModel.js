@@ -1,7 +1,7 @@
 // utils
 const { ModelAsyncWrapper } = require("../utils/module");
 // tables
-const { Comment, User } = require("../models");
+const { Comment, User, Post } = require("../models");
 
 module.exports = {
   create: {
@@ -10,6 +10,10 @@ module.exports = {
       if (data.commentId) {
         Comment.sequelize.query( 
           `UPDATE comments SET replyCnt = replyCnt + 1 WHERE id=${data.commentId};`, 
+          (err) => { if (err) throw err; } 
+        );
+        Post.sequelize.query( 
+          `UPDATE posts SET commentCnt = commentCnt + 1 WHERE id=${data.postId};`, 
           (err) => { if (err) throw err; } 
         );
       }
@@ -72,6 +76,10 @@ module.exports = {
       if (data.commentId) {
         Comment.sequelize.query( 
           `UPDATE comments SET replyCnt = replyCnt - 1 WHERE id=${prevComment.parentsId};`, 
+          (err) => { if (err) throw err; } 
+        );
+        Post.sequelize.query( 
+          `UPDATE posts SET commentCnt = commentCnt - 1 WHERE id=${data.postId};`, 
           (err) => { if (err) throw err; } 
         );
       }
