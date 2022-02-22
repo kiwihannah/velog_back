@@ -42,12 +42,15 @@ module.exports = {
 
   get: {
     post: ControllerAsyncWrapper(async (req, res) => {
-      const userId = res.locals.user.id;
+      const userId = req.query.id;
       const { postId } = req.params;
+      let isLiking = false;
 
       const post = await PostModel.get.post(postId);
 
-      const isLiking = await LikeModel.get.isLiking({ postId, userId });
+      if(userId) {
+        isLiking = await LikeModel.get.isLiking({ postId, userId });
+      }
 
       return res.status(200).json({
         post: post,
