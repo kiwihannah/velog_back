@@ -1,7 +1,7 @@
 const sequelize = require("sequelize");
 
 // utils
-const { ModelAsyncWrapper } = require("../utils/module");
+const { ModelAsyncWrapper, calcDateDiff } = require("../utils/module");
 
 // tables
 const { Post, User } = require("../models");
@@ -14,7 +14,7 @@ module.exports = {
       };
 
       const post = await Post.create({
-        userId: data.sampleUserId,
+        userId: data.userId,
         title: data.title,
         context: data.context,
         preview: data.preview,
@@ -43,7 +43,7 @@ module.exports = {
         context: data.context,
         preview: data.preview,
         thumbnail: data.thumbnail ? data.thumbnail : "",
-        userId: data.sampleUserId,
+        userId: data.userId,
       });
 
       return post.id;

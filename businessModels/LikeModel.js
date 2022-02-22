@@ -5,14 +5,14 @@ const { ModelAsyncWrapper } = require("../utils/module");
 module.exports = {
   create: {
     like: ModelAsyncWrapper(async (data) => {
-      const { postId, sampleUserId } = data;
+      const { postId, userId } = data;
       const [like, isLiked] = await Like.findOrCreate({
         where: {
           postId: postId,
-          likedId: sampleUserId,
+          likedId: userId,
         },
         defaults: {
-          likedId: sampleUserId,
+          likedId: userId,
         }
       });
       if(!isLiked) {
@@ -30,10 +30,11 @@ module.exports = {
 
   get: {
     isLiking: ModelAsyncWrapper(async (data) => {
+      const { postId, userId } = data;
       const isLiking = await Like.findOne({
         where: {
-          postId: data.postId,
-          likedId: data.userId,
+          postId: postId,
+          likedId: userId,
         },
       }); 
 
@@ -58,7 +59,7 @@ module.exports = {
       await Like.destroy({
         where: {
           postId: data.postId,
-          likedId: data.sampleUserId,
+          likedId: data.userId,
         },
       });
 
