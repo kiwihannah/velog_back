@@ -91,6 +91,8 @@ module.exports = {
                 }
                 const token = jwt.sign({ nickname: user.nickname }, process.env.SECRET_KEY);
                 res.send({
+                    nickname:user.nickname,
+                    id:user.id,
                     token,
                 });
             } catch (error) {

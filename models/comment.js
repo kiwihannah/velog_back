@@ -15,6 +15,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         default: 'N',
       },
+      replyCnt: {
+        type: DataTypes.INTEGER, // interval
+        allowNull: false,
+        default: 0,
+      },
     },
     {
       charset: 'utf8mb4',

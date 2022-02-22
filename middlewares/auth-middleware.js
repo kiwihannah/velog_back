@@ -21,7 +21,7 @@ module.exports = (req, res, next) => {
             });
     } catch (error) {
         res.status(401).send({
-            msg: '로그인 후 사용하세요.',
+            msg: '잘못된 접근입니다.',
         });
         return;
     }
