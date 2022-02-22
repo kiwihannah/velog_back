@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
-// controllers
 const CommentController = require("../controllers/commentController");
   
-// /api/post
-router.post("/:postId/comment/:commentId", CommentController.create.comment); // 포스트 작성 CREATE api/post/3/comment/2
+router.post("/:postId/comment/:commentId", CommentController.create.comment); 
+router.get("/:postId/comments", CommentController.get.commentsParents);
+router.get("/:postId/comments/:commentId", CommentController.get.commentsChild);
+router.patch('/:postId/comment/:commentId', CommentController.update.comment);
+router.patch('/:postId/comment/:commentId/disabled', CommentController.delete.comment);
 
 module.exports = router;

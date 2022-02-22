@@ -2,77 +2,47 @@
 const { ControllerAsyncWrapper } = require("../utils/module");
 // models
 const CommentModel = require("../businessModels/commentModel");
+//samples
+const userId = 1;
 
 module.exports = {
   create: {
     comment: ControllerAsyncWrapper(async (req, res) => {
-      const userId = 1;
-      const postId = 1;
       const { commentBody } = req.body;
-      const { commentId } = req.params;
+      const { commentId, postId } = req.params;
       const isDeleted = 'N';
-      await CommentModel.create.comment({ 
-        commentBody, commentId, isDeleted, postId, userId 
-      });
-      return res.status(200).json({ });
+      await CommentModel.create.comment({ commentBody, commentId, isDeleted, postId, userId });
+      return res.status(201).json({});
     }),
   },
 
   update: {
     comment: ControllerAsyncWrapper(async (req, res) => {
-      const sampleUserId = 1;
-      const { postId } = req.params;
-      const { title, context, preview } = req.body;
-
-      CommentModel.get.thumbnail(context, result => {
-        thumbnail = result;
-      });
-
-      const id = await CommentModel.update.post(
-        { postId, title, context, preview, thumbnail, sampleUserId}
-      );
-
-      return res.status(201).json({ postId: id });
+      const { commentId } = req.params;
+      const { commentBody, postId } = req.body;
+      await CommentModel.update.comment({ commentId, commentBody, userId, postId });
+      return res.status(201).json({});
     }),
   },
 
   get: {
-    comment: ControllerAsyncWrapper(async (req, res) => {
-      const sampleUserId = 1;
+    commentsParents: ControllerAsyncWrapper(async (req, res) => {
       const { postId } = req.params;
-
-      const post = await CommentModel.get.post(postId);
-
-      const isLiking = await CommentModel.get.isLiking({ postId, userId: sampleUserId });
-
-      return res.status(200).json({
-        post: post,
-        isLiking: isLiking,
-      });
+      const commentsParents = await CommentModel.get.commentsParents({ postId }) 
+      return res.status(200).json({ commentsParents });
     }),
-
-    posts: ControllerAsyncWrapper(async (req, res) => {
-      const posts = await CommentModel.get.posts();
-
-      return res.status(200).json(posts);
-    }),
-
-    userPosts: ControllerAsyncWrapper(async (req, res) => {
-      const { userId } = req.params;
-
-      const posts = await CommentModel.get.userPosts(userId);
-
-      return res.status(200).json(posts);
+    commentsChild: ControllerAsyncWrapper(async (req, res) => {
+      const { commentId } = req.params;
+      const commentsChild = await CommentModel.get.commentsChild({ commentId });
+      return res.status(200).json({ commentsChild });
     }),
   },
 
   delete: {
     comment: ControllerAsyncWrapper(async (req, res) => {
-      const { commentId } = req.params;
-
-      await CommentModel.delete.post(postId);
-
-      return res.status(200).json({ msg: "포스트를 삭제하였습니다." });
+      const { commentId } = req.params; 
+      await CommentModel.delete.comment({ commentId });
+      return res.status(200).json({});
     }),
   }
 };
