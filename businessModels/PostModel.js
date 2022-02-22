@@ -69,7 +69,7 @@ module.exports = {
         where: { id: data },
         attributes: [
           "id", "title", "thumbnail", "context", "createdAt", "likeCnt",
-          [sequelize.literal(`(SELECT COUNT(*) FROM Comments WHERE Comments.postId=${data})`), "commentCnt"],
+          [sequelize.literal(`(SELECT COUNT(*) FROM comments WHERE Comments.postId=${data})`), "commentCnt"],
         ],
         include: {
           model: User,
