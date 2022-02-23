@@ -6,9 +6,7 @@ const CommentModel = require("../businessModels/commentModel");
 module.exports = {
   create: {
     comment: ControllerAsyncWrapper(async (req, res) => {
-      const userId = res.locals.userId;
-      console.log(userId)
-      const { commentBody } = req.body;
+      const { commentBody, userId } = req.body;
       const { commentId, postId } = req.params;
       const isDeleted = 'N';
       const comment = await CommentModel.create.comment({ commentBody, commentId, isDeleted, postId, userId });
