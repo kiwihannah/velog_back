@@ -2,11 +2,11 @@
 const { ControllerAsyncWrapper } = require("../utils/module");
 // models
 const CommentModel = require("../businessModels/commentModel");
-const userId = res.locals.user.id;
 
 module.exports = {
   create: {
     comment: ControllerAsyncWrapper(async (req, res) => {
+      const userId = res.locals.user.id;
       const { commentBody } = req.body;
       const { commentId, postId } = req.params;
       const isDeleted = 'N';
@@ -17,6 +17,7 @@ module.exports = {
 
   update: {
     comment: ControllerAsyncWrapper(async (req, res) => {
+      const userId = res.locals.user.id;
       const { commentId } = req.params;
       const { commentBody, postId } = req.body;
       await CommentModel.update.comment({ commentId, commentBody, userId, postId });
@@ -39,6 +40,7 @@ module.exports = {
 
   delete: {
     comment: ControllerAsyncWrapper(async (req, res) => {
+      const userId = res.locals.user.id;
       const { commentId } = req.params; 
       await CommentModel.delete.comment({ commentId });
       return res.status(200).json({ msg : '정말로 댓글을 삭제 하시겠습니까?' });
