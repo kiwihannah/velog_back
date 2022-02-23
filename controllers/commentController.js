@@ -7,6 +7,7 @@ module.exports = {
   create: {
     comment: ControllerAsyncWrapper(async (req, res) => {
       const userId = res.locals.userId;
+      console.log(userId)
       const { commentBody } = req.body;
       const { commentId, postId } = req.params;
       const isDeleted = 'N';

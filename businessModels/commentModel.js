@@ -23,7 +23,11 @@ module.exports = {
         isDeleted : data.isDeleted,
         userId : data.userId, 
         postId : data.postId,
-        replyCnt : 0
+        replyCnt : 0,
+        include: {
+          model: User,
+          attributes: ["id", "nickname"],
+        },
       });
       return comment;
     }),
