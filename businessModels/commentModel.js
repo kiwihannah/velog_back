@@ -17,7 +17,7 @@ module.exports = {
           (err) => { if (err) throw err; } 
         );
       }
-      await Comment.create({
+      const comment = await Comment.create({
         parentsId : Number(data.commentId) !== 0 ? data.commentId : 0,
         commentBody : data.commentBody,
         isDeleted : data.isDeleted,
@@ -25,6 +25,7 @@ module.exports = {
         postId : data.postId,
         replyCnt : 0
       });
+      return comment;
     }),
   },
 

@@ -10,8 +10,8 @@ module.exports = {
       const { commentBody } = req.body;
       const { commentId, postId } = req.params;
       const isDeleted = 'N';
-      await CommentModel.create.comment({ commentBody, commentId, isDeleted, postId, userId });
-      return res.status(201).json({});
+      const comment = await CommentModel.create.comment({ commentBody, commentId, isDeleted, postId, userId });
+      return res.status(201).json({ comment });
     }),
   },
 
