@@ -40,8 +40,8 @@ module.exports = {
   delete: {
     comment: ControllerAsyncWrapper(async (req, res) => {
       const userId = res.locals.userId;
-      const { commentId } = req.params; 
-      await CommentModel.delete.comment({ commentId });
+      const { commentId, postId } = req.params; 
+      await CommentModel.delete.comment({ commentId, postId });
       return res.status(200).json({ msg : '정말로 댓글을 삭제 하시겠습니까?' });
     }),
   }
