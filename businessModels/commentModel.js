@@ -42,7 +42,7 @@ module.exports = {
 
   get: {
     commentsParents: ModelAsyncWrapper(async (data) => {
-      const comments = await Comment.findAll({
+      const commentsParents = await Comment.findAll({
         where: {
           postId : data.postId,
           isDeleted : 'N',
@@ -54,10 +54,10 @@ module.exports = {
         },
         order: [["createdAt", "ASC"]],
       });
-      return comments;
+      return commentsParents;
     }),
     commentsChild: ModelAsyncWrapper(async (data) => {
-      const comments = await Comment.findAll({
+      const commentsChild = await Comment.findAll({
         where: {
           parentsId : data.commentId,
           isDeleted : 'N'
@@ -68,7 +68,7 @@ module.exports = {
         },
         order: [["createdAt", "ASC"]],
       });
-      return comments;
+      return commentsChild;
     }),
   },
   delete: {
