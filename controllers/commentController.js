@@ -2,8 +2,7 @@
 const { ControllerAsyncWrapper } = require("../utils/module");
 // models
 const CommentModel = require("../businessModels/commentModel");
-//samples
-const userId = 1;
+const userId = res.locals.user.id;
 
 module.exports = {
   create: {
@@ -21,7 +20,7 @@ module.exports = {
       const { commentId } = req.params;
       const { commentBody, postId } = req.body;
       await CommentModel.update.comment({ commentId, commentBody, userId, postId });
-      return res.status(201).json({});
+      return res.status(201).json({ msg : '댓글이 수정되었습니다.' });
     }),
   },
 
@@ -42,7 +41,7 @@ module.exports = {
     comment: ControllerAsyncWrapper(async (req, res) => {
       const { commentId } = req.params; 
       await CommentModel.delete.comment({ commentId });
-      return res.status(200).json({});
+      return res.status(200).json({ msg : '정말로 댓글을 삭제 하시겠습니까?' });
     }),
   }
 };

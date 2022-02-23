@@ -45,7 +45,8 @@ module.exports = {
       const comments = await Comment.findAll({
         where: {
           postId : data.postId,
-          isDeleted : 'N'
+          isDeleted : 'N',
+          parentsId : 0
         },
         include: {
           model: User,
