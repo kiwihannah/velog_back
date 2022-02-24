@@ -23,7 +23,7 @@ https://pattern-beluga-3d8.notion.site/2-Velog-eb1edb64b30c4565adf5b9901d0ffc6a
 https://youtu.be/azdj9lhkELk
 
 ### db diagram
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/7af0405d-b406-494a-957a-e573dc725f4e/Untitled.png)
+![image](https://user-images.githubusercontent.com/83942678/155482619-68a937ff-92ce-49cc-87d0-9113b6307b6d.png)
 	
 ## Technologies
 Project is created with:
